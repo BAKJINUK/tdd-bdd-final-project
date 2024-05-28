@@ -232,7 +232,6 @@ class TestProductModel(unittest.TestCase):
 
         # test raise DataValidationError by TypeError
         self.assertRaises(DataValidationError, product.deserialize, None)
-<<<<<<< HEAD
 
     def test_find_by_price(self):
         """It shoud Find product(s) list by price"""
@@ -244,5 +243,3 @@ class TestProductModel(unittest.TestCase):
             found_product = Product.find_by_price(original_price)
             self.assertTrue(found_product.count() >= 1)
             self.assertTrue(Product.find_by_price(f'"{original_price}"').count() >= 1)
-=======
->>>>>>> 6bf24886360a8ec4da3af8cbeb9e6cc80e022eff
