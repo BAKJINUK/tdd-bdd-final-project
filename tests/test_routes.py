@@ -181,7 +181,7 @@ class TestProductRoutes(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         data = response.get_json()
         self.assertIn("was not found", data["message"])
-    
+
     def test_update_product(self):
         """It should Update an existing Product"""
         # create a product to update
@@ -196,7 +196,7 @@ class TestProductRoutes(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         updated_product = response.get_json()
         self.assertEqual(updated_product["description"], "unknown")
-    
+
     def test_update_product_not_found(self):
         """It should not Update an existing Product"""
         # create a product to update
@@ -206,7 +206,7 @@ class TestProductRoutes(TestCase):
         # try to update product with worng id
         response = self.client.put(f"{BASE_URL}/2", json=response.get_json())
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_delete_product(self):
         """It should Delete an exisition Product"""
         # create a product to update
@@ -215,9 +215,9 @@ class TestProductRoutes(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # delete the product
         del_product = response.get_json()
-        response = self.client.delete(f"{BASE_URL}/{del_product['id']}" )
+        response = self.client.delete(f"{BASE_URL}/{del_product['id']}")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-    
+
     def test_list_all_products(self):
         """It should Get a list of Products"""
         # create products
