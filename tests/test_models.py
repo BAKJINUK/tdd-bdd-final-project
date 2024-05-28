@@ -196,33 +196,32 @@ class TestProductModel(unittest.TestCase):
     def test_update_a_product_without_id(self):
         """It should raise DataValidationError at test_update_a_product_without_id() """
         product = ProductFactory()
-        product.id = None        
+        product.id = None
         product.create()
         self.assertIsNotNone(product.id)
         # set id to None
         product.id = None
         self.assertRaises(DataValidationError, product.update)
-    
+
     def test_deserialize_from_dict(self):
         """It should raise DataValidationError by errors"""
         product = ProductFactory()
         product.create()
         dict_product = product.serialize()
         product.delete()
-        
+
         # save original values
         original_available = dict_product["available"]
         original_name = dict_product['name']
-        original_price = dict_product['price']
         original_category = dict_product['category']
 
-        # test raise DataValidationError by checking bool instance       
+        # test raise DataValidationError by checking bool instance
         dict_product["available"] = "Error"
         self.assertRaises(DataValidationError, product.deserialize, dict_product)
         dict_product["available"] = original_available
 
         # test raise DataValidationError by KeyError
-        del dict_product["name"]        
+        del dict_product["name"]
         self.assertRaises(DataValidationError, product.deserialize, dict_product)
         dict_product['name'] = original_name
 
@@ -234,3 +233,13 @@ class TestProductModel(unittest.TestCase):
         # test raise DataValidationError by TypeError
         self.assertRaises(DataValidationError, product.deserialize, None)
 
+    def test_find_by_price(self):
+        """It shoud Find product(s) list by price"""
+        products = ProductFactory.create_batch(10)
+        for product in products:
+            product.create()
+        for product in products:
+            original_price = product.price
+            found_product = Product.find_by_price(original_price)
+            self.assertTrue(found_product.count() >= 1)
+            self.assertTrue(Product.find_by_price(f'"{original_price}"').count() >= 1)
